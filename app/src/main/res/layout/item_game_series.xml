@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_ripple_shape"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@drawable/item_ripple_shape"
+    android:elevation="@dimen/item_elevation"
+    android:padding="@dimen/default_padding"
+    android:layout_marginVertical="@dimen/game_series_vertical_margin"
+    android:layout_marginHorizontal="@dimen/default_padding"
+    android:textSize="@dimen/item_text_size"
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:text="The Legend of Zelda" />

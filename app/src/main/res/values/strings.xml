@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AmiiboApi</string>
+    <string name="amiibo_image_desc">This image contains amiibo image</string>
+    <string name="unknown_error">Something went wrong</string>
+    <string name="unknown_host_message">Unable to connect with server! Please, check your connection or try again later</string>
+    <string name="connection_timeout">Connection timeout</string>
+    <string name="internal_server_error">Internal server error. Please try again later</string>
+    <string name="server_unavailable">Server unavailable. Please try again later</string>
+    <string name="not_found">Requested information not found</string>
+    <string name="request_timeout">Request timeout</string>
+    <string name="release_date">Release date</string>
+</resources>
