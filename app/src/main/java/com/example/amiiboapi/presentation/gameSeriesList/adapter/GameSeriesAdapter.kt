@@ -7,6 +7,14 @@ import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.GameSeriesModel
 import com.example.amiiboapi.presentation.gameSeriesList.viewholder.GameSeriesViewHolder
 
+/**
+ * Адаптер для отображения серий игр
+ *
+ * @property gameSeries список серий игр [GameSeriesModel]
+ * @property clickListener слушатель нажатий
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class GameSeriesAdapter(
     private val gameSeries: List<GameSeriesModel>,
     private val clickListener: (String) -> Unit) : RecyclerView.Adapter<GameSeriesViewHolder>() {

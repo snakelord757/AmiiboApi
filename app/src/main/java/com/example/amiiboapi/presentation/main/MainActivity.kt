@@ -10,6 +10,11 @@ import com.example.amiiboapi.presentation.amiiboList.AmiiboListFragment
 import com.example.amiiboapi.presentation.gameSeriesList.GameSeriesFragment
 import com.example.amiiboapi.presentation.common.interfaces.Navigation
 
+/**
+ * Главное Activity, являющееся хостом для всех фрагментов
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class MainActivity : AppCompatActivity(), Navigation {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,9 +28,15 @@ class MainActivity : AppCompatActivity(), Navigation {
         val amiiboListFragment = supportFragmentManager.findFragmentByTag(AmiiboListFragment.TAG)
         val aboutAmiiboFragment = supportFragmentManager.findFragmentByTag(AboutAmiiboFragment.TAG)
         when {
-            aboutAmiiboFragment != null -> { replace(aboutAmiiboFragment, AboutAmiiboFragment.TAG) }
-            amiiboListFragment != null -> { replace(amiiboListFragment, AmiiboListFragment.TAG) }
-            gameSeriesFragment != null -> { replace(gameSeriesFragment, GameSeriesFragment.TAG) }
+            aboutAmiiboFragment != null -> {
+                replace(aboutAmiiboFragment, AboutAmiiboFragment.TAG)
+            }
+            amiiboListFragment != null -> {
+                replace(amiiboListFragment, AmiiboListFragment.TAG)
+            }
+            gameSeriesFragment != null -> {
+                replace(gameSeriesFragment, GameSeriesFragment.TAG)
+            }
             else -> showStartFragment()
         }
     }
@@ -45,9 +56,9 @@ class MainActivity : AppCompatActivity(), Navigation {
     }
 
     private fun replace(fragment: Fragment, tag: String) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, fragment, tag)
-                .commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment, tag)
+            .commit()
     }
 
 }

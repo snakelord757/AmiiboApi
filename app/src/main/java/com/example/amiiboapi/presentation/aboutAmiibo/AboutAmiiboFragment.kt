@@ -11,11 +11,17 @@ import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.presentation.common.BaseFragment
 import com.squareup.picasso.Picasso
 
+/**
+ * Фрагмент, отображающий информацию о выбранном предмете
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment_about_amiibo) {
     
     private lateinit var amiiboImageView: ImageView
     private lateinit var amiiboTailTextView: TextView
     private lateinit var amiiboSeriesTextView: TextView
+    private lateinit var amiiboGameSeriesTextView: TextView
     private lateinit var amiiboTypeTextView: TextView
     private lateinit var amiiboInfoContainer: ViewGroup
 
@@ -28,12 +34,13 @@ class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment
         amiiboImageView = view.findViewById(R.id.amiiboImage)
         amiiboTailTextView = view.findViewById(R.id.amiiboName)
         amiiboSeriesTextView = view.findViewById(R.id.amiiboSeries)
+        amiiboGameSeriesTextView = view.findViewById(R.id.amiiboGameSeries)
         amiiboTypeTextView = view.findViewById(R.id.amiiboType)
         amiiboInfoContainer = view.findViewById(R.id.amiiboInfoContainer)
         viewModel.amiibo.observe(viewLifecycleOwner, ::showInfo)
         arguments?.let { args ->
-            if(args.containsKey(AMIIBO_NAME_KEY))
-                viewModel.loadInfoAbout(args.getString(AMIIBO_NAME_KEY)!!)
+            if(args.containsKey(AMIIBO_TAIL_KEY))
+                viewModel.loadInfoAbout(args.getString(AMIIBO_TAIL_KEY)!!)
         }
     }
 
@@ -46,16 +53,23 @@ class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment
             .into(amiiboImageView)
         amiiboTailTextView.text = amiiboModel.name
         amiiboSeriesTextView.text = amiiboModel.amiiboSeries
+        amiiboGameSeriesTextView.text = amiiboModel.gameSeries
         amiiboTypeTextView.text = amiiboModel.type
     }
     
     companion object {
         const val TAG = "AboutAmiiboFragment"
-        private const val AMIIBO_NAME_KEY = "amiibo-name-key"
+        private const val AMIIBO_TAIL_KEY = "amiibo-name-key"
 
+        /**
+         * Фабричный метод для создания экземпляра [AboutAmiiboFragment] с заданным [AMIIBO_TAIL_KEY]
+         *
+         * @param amiiboTail "хвост" выбранного предмета
+         * @return экземпляр класса [AboutAmiiboFragment]
+         */
         fun newInstance(amiiboTail: String): AboutAmiiboFragment {
             val args = Bundle()
-            args.putString(AMIIBO_NAME_KEY, amiiboTail)
+            args.putString(AMIIBO_TAIL_KEY, amiiboTail)
             val aboutAmiiboFragment = AboutAmiiboFragment()
             aboutAmiiboFragment.arguments = args
             return aboutAmiiboFragment

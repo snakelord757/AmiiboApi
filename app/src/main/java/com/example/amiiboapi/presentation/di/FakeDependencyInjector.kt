@@ -10,6 +10,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
+/**
+ * Фейковая инъекция зависимостей
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 object FakeDependencyInjector {
 
     private const val COMMON_TIMEOUT = 5L
@@ -38,6 +43,11 @@ object FakeDependencyInjector {
         return repository!!
     }
 
+    /**
+     * Возвращает подкготовленный интерактор
+     *
+     * @return экземпляр [AmiiboInteractor]
+     */
     fun injectAmiiboInteractor(): AmiiboInteractor {
         if (interactor == null)
             interactor = AmiiboInteractorImpl(injectAmiiboRepository())

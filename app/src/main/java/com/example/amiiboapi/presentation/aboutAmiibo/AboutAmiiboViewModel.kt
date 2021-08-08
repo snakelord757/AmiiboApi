@@ -10,6 +10,13 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
+/**
+ * ViewModel для отображения информации о выбранном предмете
+ *
+ * @property amiiboInteractor интерактор для получения информации из репозитория
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class AboutAmiiboViewModel(
     private val amiiboInteractor: AmiiboInteractor = FakeDependencyInjector.injectAmiiboInteractor()
 ) : AppViewModel() {
@@ -18,6 +25,11 @@ class AboutAmiiboViewModel(
     val amiibo: LiveData<AmiiboModel>
         get() = amiiboMutableLiveData
 
+    /**
+     * Метод, для загрузки информации о выбранном предмете
+     *
+     * @param amiiboTail "хвост" предмета
+     */
     fun loadInfoAbout(amiiboTail: String) {
         singleTaskDisposable = Single.fromCallable {
             amiiboInteractor.getInfoAboutAmiibo(amiiboTail)
@@ -25,8 +37,9 @@ class AboutAmiiboViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({ container ->
-                updateProgressBarVisibility()
-                amiiboMutableLiveData.value = container.amiibo.first()
-            }, ::doOnError)
+                resultReceived { amiiboMutableLiveData.value = container.amiibo.first() }
+            }, { throwable ->
+                showError(throwable)
+            })
     }
 }

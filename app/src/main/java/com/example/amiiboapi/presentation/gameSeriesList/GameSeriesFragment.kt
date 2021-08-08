@@ -14,6 +14,11 @@ import com.example.amiiboapi.presentation.common.BaseFragment
 import com.example.amiiboapi.presentation.extensions.navigation
 import com.example.amiiboapi.presentation.gameSeriesList.adapter.GameSeriesAdapter
 
+/**
+ * Фрагмент для отображения игровых серий
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class GameSeriesFragment : BaseFragment<GameSeriesViewModel>(R.layout.fragment_with_list) {
 
     private lateinit var gameSeriesRecyclerView: RecyclerView
@@ -37,7 +42,7 @@ class GameSeriesFragment : BaseFragment<GameSeriesViewModel>(R.layout.fragment_w
     }
 
     private fun showAmiiboByGameSeries(gameSeriesKey: String) {
-        navigation.move(
+        moveTo(
             AmiiboListFragment.newInstance(gameSeriesKey),
             AmiiboListFragment.TAG
         )
@@ -46,6 +51,11 @@ class GameSeriesFragment : BaseFragment<GameSeriesViewModel>(R.layout.fragment_w
     companion object {
         const val TAG = "GameSeriesFragment"
 
+        /**
+         * Фабричный метод для создания экзмепляра [GameSeriesFragment]
+         *
+         * @return экземпляр [GameSeriesFragment]
+         */
         fun newInstance(): GameSeriesFragment {
             return GameSeriesFragment()
         }

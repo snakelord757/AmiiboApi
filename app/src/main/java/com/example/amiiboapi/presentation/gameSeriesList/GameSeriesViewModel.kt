@@ -2,16 +2,21 @@ package com.example.amiiboapi.presentation.gameSeriesList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.amiiboapi.data.model.GameSeriesModel
 import com.example.amiiboapi.domain.interactor.AmiiboInteractor
 import com.example.amiiboapi.presentation.common.viewmodel.AppViewModel
 import com.example.amiiboapi.presentation.di.FakeDependencyInjector
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
+/**
+ * ViewModel для отображения списка серий игр
+ *
+ * @property amiiboInteractor интерактор для получения инофрмации из репозитория
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class GameSeriesViewModel(
     private val amiiboInteractor: AmiiboInteractor = FakeDependencyInjector.injectAmiiboInteractor()
 ) : AppViewModel() {
@@ -31,8 +36,9 @@ class GameSeriesViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({ container ->
-                updateProgressBarVisibility()
-                gameSeriesMutableLiveData.value = container.amiibo
-            }, ::doOnError)
+                resultReceived { gameSeriesMutableLiveData.value = container.amiibo }
+            }, { throwable ->
+                showError(throwable)
+            })
     }
 }

@@ -2,14 +2,21 @@ package com.example.amiiboapi.presentation.amiiboList.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ExpandableListView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.example.amiiboapi.presentation.amiiboList.viewholder.AmiiboViewHolder
 
+/**
+ * Адаптер для отображения предметов по выбранной игровой серии
+ *
+ * @property amiiboList список предметов [AmiiboModelMinimal]
+ * @property clickListener слушатель нажатий
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class AmiiboAdapter(
-    private val amiibosList: List<AmiiboModelMinimal>,
+    private val amiiboList: List<AmiiboModelMinimal>,
     private val clickListener: (String) -> Unit,) : RecyclerView.Adapter<AmiiboViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AmiiboViewHolder {
@@ -19,8 +26,8 @@ class AmiiboAdapter(
     }
 
     override fun onBindViewHolder(holder: AmiiboViewHolder, position: Int) {
-        holder.bind(amiibosList[position])
+        holder.bind(amiiboList[position])
     }
 
-    override fun getItemCount(): Int = amiibosList.size
+    override fun getItemCount(): Int = amiiboList.size
 }

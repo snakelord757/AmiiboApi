@@ -10,6 +10,13 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
+/**
+ * ViewModel для получения списка предметов, по заданной серии игр
+ *
+ * @property amiiboInteractor интерактор, для получения информациии из репоитория
+ *
+ * @author Murad Luguev on 08-08-2021
+ */
 class AmiiboListViewModel(
     private val amiiboInteractor: AmiiboInteractor = FakeDependencyInjector.injectAmiiboInteractor()
 ) : AppViewModel() {
@@ -18,6 +25,11 @@ class AmiiboListViewModel(
     val amiiboListMinimal: LiveData<List<AmiiboModelMinimal>>
         get() = amiiboListMutableLiveData
 
+    /**
+     * Получает список предметов по зданной игровой серии
+     *
+     * @param gameSeriesKey ключ игровой серии
+     */
     fun getAmiiboByGameSeries(gameSeriesKey: String) {
         if (amiiboListMutableLiveData.value == null) {
             singleTaskDisposable = Single.fromCallable {
@@ -25,11 +37,11 @@ class AmiiboListViewModel(
             }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(
-                    {container ->
-                        updateProgressBarVisibility()
-                        amiiboListMutableLiveData.value = container.amiibo }
-                    , ::doOnError)
+                .subscribe({ container ->
+                    resultReceived { amiiboListMutableLiveData.value = container.amiibo }
+                }, { throwable ->
+                    showError(throwable)
+                })
         }
     }
 }
