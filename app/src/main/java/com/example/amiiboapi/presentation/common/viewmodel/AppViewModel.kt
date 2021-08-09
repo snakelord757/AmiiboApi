@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.amiiboapi.domain.mapper.ErrorMapper
+import com.example.amiiboapi.domain.mapper.ErrorMapperImpl
 import com.example.amiiboapi.domain.model.Error
+import com.example.amiiboapi.presentation.di.FakeDependencyInjector
 import io.reactivex.disposables.Disposable
 
 /**
@@ -13,7 +15,7 @@ import io.reactivex.disposables.Disposable
  *
  * @author Murad Luguev on 08-08-2021
  */
-abstract class AppViewModel : ViewModel() {
+abstract class AppViewModel(private val errorMapper: ErrorMapper) : ViewModel() {
 
     private val errorMutableLiveData = MutableLiveData<Error>()
     val error: LiveData<Error>
@@ -36,7 +38,7 @@ abstract class AppViewModel : ViewModel() {
     }
 
     private fun performError(throwable: Throwable) {
-        errorMutableLiveData.value = ErrorMapper.mapError(throwable)
+        errorMutableLiveData.value = errorMapper.mapError(throwable)
     }
 
     private fun hideProgressBar() {

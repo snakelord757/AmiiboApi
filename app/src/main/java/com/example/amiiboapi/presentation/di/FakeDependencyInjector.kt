@@ -6,6 +6,10 @@ import com.example.amiiboapi.data.repository.AmiiboRepository
 import com.example.amiiboapi.data.repository.AmiiboRepositoryImpl
 import com.example.amiiboapi.domain.interactor.AmiiboInteractor
 import com.example.amiiboapi.domain.interactor.AmiiboInteractorImpl
+import com.example.amiiboapi.domain.mapper.ErrorMapper
+import com.example.amiiboapi.domain.mapper.ErrorMapperImpl
+import com.example.amiiboapi.presentation.common.SchedulersProvider
+import com.example.amiiboapi.presentation.common.SchedulersProviderImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
@@ -22,6 +26,8 @@ object FakeDependencyInjector {
     private var api: AmiiboApi? = null
     private var repository: AmiiboRepository? = null
     private var interactor: AmiiboInteractor? = null
+    private var provider: SchedulersProvider? = null
+    private var errorMapper: ErrorMapper? = null
 
     private fun injectAmiiboApi(): AmiiboApi {
         if (api == null) {
@@ -52,5 +58,17 @@ object FakeDependencyInjector {
         if (interactor == null)
             interactor = AmiiboInteractorImpl(injectAmiiboRepository())
         return interactor!!
+    }
+
+    fun injectSchedulersProvider(): SchedulersProvider {
+        if (provider == null)
+            provider = SchedulersProviderImpl()
+        return provider!!
+    }
+
+    fun injectErrorMapper(): ErrorMapper {
+        if (errorMapper == null)
+            errorMapper = ErrorMapperImpl()
+        return errorMapper!!
     }
 }
