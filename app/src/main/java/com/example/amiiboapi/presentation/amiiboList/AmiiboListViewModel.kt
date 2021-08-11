@@ -34,18 +34,22 @@ class AmiiboListViewModel(
      *
      * @param gameSeriesKey ключ игровой серии
      */
-    fun getAmiiboByGameSeries(gameSeriesKey: String) {
-        if (amiiboListMutableLiveData.value == null) {
-            singleTaskDisposable = Single.fromCallable {
-                amiiboInteractor.getAmiiboByGameSeries(gameSeriesKey)
-            }
-                .observeOn(schedulersProvider.main())
-                .subscribeOn(schedulersProvider.io())
-                .subscribe({ container ->
-                    resultReceived { amiiboListMutableLiveData.value = container.amiibo }
-                }, { throwable ->
-                    showError(throwable)
-                })
+    fun getAmiiboByGameSeries(gameSeriesKey: String, forceReload: Boolean) {
+        if (amiiboListMutableLiveData.value.isNullOrEmpty() || forceReload)
+            loadAmiibo(gameSeriesKey)
+    }
+
+    private fun loadAmiibo(gameSeriesKey: String) {
+        showProgress()
+        singleTaskDisposable = Single.fromCallable {
+            amiiboInteractor.getAmiiboByGameSeries(gameSeriesKey)
         }
+            .observeOn(schedulersProvider.main())
+            .subscribeOn(schedulersProvider.io())
+            .subscribe({ container ->
+                resultReceived { amiiboListMutableLiveData.value = container.amiibo }
+            }, { throwable ->
+                showError(throwable)
+            })
     }
 }

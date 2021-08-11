@@ -37,6 +37,10 @@ abstract class AppViewModel(private val errorMapper: ErrorMapper) : ViewModel() 
         performError(throwable)
     }
 
+    protected fun showProgress() {
+        showProgressBarMutableLiveData.value = true
+    }
+
     private fun performError(throwable: Throwable) {
         errorMutableLiveData.value = errorMapper.mapError(throwable)
     }

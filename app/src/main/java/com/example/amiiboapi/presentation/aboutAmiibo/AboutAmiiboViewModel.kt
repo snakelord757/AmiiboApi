@@ -29,12 +29,18 @@ class AboutAmiiboViewModel(
     val amiibo: LiveData<AmiiboModel>
         get() = amiiboMutableLiveData
 
+
+    fun getInfoAbout(amiiboTail: String, forceReload: Boolean) {
+        if (amiiboMutableLiveData.value == null || forceReload)
+            loadInfoAbout(amiiboTail)
+    }
     /**
      * Метод, для загрузки информации о выбранном предмете
      *
      * @param amiiboTail "хвост" предмета
      */
-    fun loadInfoAbout(amiiboTail: String) {
+    private fun loadInfoAbout(amiiboTail: String) {
+        showProgress()
         singleTaskDisposable = Single.fromCallable {
             amiiboInteractor.getInfoAboutAmiibo(amiiboTail)
         }

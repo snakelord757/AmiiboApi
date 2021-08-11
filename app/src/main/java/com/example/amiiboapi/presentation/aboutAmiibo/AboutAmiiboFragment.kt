@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
  * @author Murad Luguev on 08-08-2021
  */
 class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment_about_amiibo) {
-    
+
     private lateinit var amiiboImageView: ImageView
     private lateinit var amiiboTailTextView: TextView
     private lateinit var amiiboSeriesTextView: TextView
@@ -38,10 +38,7 @@ class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment
         amiiboTypeTextView = view.findViewById(R.id.amiiboType)
         amiiboInfoContainer = view.findViewById(R.id.amiiboInfoContainer)
         viewModel.amiibo.observe(viewLifecycleOwner, ::showInfo)
-        arguments?.let { args ->
-            if(args.containsKey(AMIIBO_TAIL_KEY))
-                viewModel.loadInfoAbout(args.getString(AMIIBO_TAIL_KEY)!!)
-        }
+        loadInfoAboutAmiibo()
     }
 
     private fun showInfo(amiiboModel: AmiiboModel) {
@@ -56,7 +53,18 @@ class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment
         amiiboGameSeriesTextView.text = amiiboModel.gameSeries
         amiiboTypeTextView.text = amiiboModel.type
     }
-    
+
+    override fun doOnRefresh() {
+        amiiboInfoContainer.visibility = View.GONE
+        loadInfoAboutAmiibo(true)
+    }
+
+    private fun loadInfoAboutAmiibo(forceReload: Boolean = false) {
+        val args = requireArguments()
+        if (args.containsKey(AMIIBO_TAIL_KEY))
+            viewModel.getInfoAbout(args.getString(AMIIBO_TAIL_KEY)!!, forceReload)
+    }
+
     companion object {
         const val TAG = "AboutAmiiboFragment"
         private const val AMIIBO_TAIL_KEY = "amiibo-name-key"

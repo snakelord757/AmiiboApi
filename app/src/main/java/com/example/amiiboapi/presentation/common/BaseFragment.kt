@@ -1,11 +1,14 @@
 package com.example.amiiboapi.presentation.common
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.amiiboapi.R
 import com.example.amiiboapi.domain.model.Error
 import com.example.amiiboapi.presentation.common.viewmodel.AppViewModel
@@ -22,29 +25,45 @@ import com.example.amiiboapi.presentation.extensions.navigation
  * @author Murad Luguev on 08-08-2021
  */
 abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
-    where VM : AppViewModel {
+        where VM : AppViewModel {
 
-    protected val viewModel: VM by lazy { provideViewModel() }
-    private lateinit var progressBar: ProgressBar
+    protected lateinit var viewModel: VM
+    private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var errorMessage: TextView
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel = provideViewModel()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = view.findViewById(R.id.progressBar)
-        errorMessage = view.findViewById(R.id.errorMessage)
+        initUI(view)
         viewModel.showProgressBar.observe(viewLifecycleOwner, ::updateProgressbarVisibility)
         viewModel.error.observe(viewLifecycleOwner, ::showErrorMessage)
     }
 
+    private fun initUI(view: View) {
+        errorMessage = view.findViewById(R.id.errorMessage)
+        swipeToRefreshLayout = view.findViewById(R.id.swipeToRefresh)
+        swipeToRefreshLayout.setOnRefreshListener(getRefreshListener())
+        swipeToRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.teal_200))
+    }
+
     private fun updateProgressbarVisibility(isVisible: Boolean) {
-        if (!isVisible) {
-            progressBar.visibility = View.GONE
-        }
+        swipeToRefreshLayout.isRefreshing = isVisible
     }
 
     private fun showErrorMessage(error: Error) {
         errorMessage.visibility = View.VISIBLE
         errorMessage.text = getString(error.messageResId)
+    }
+
+    private fun getRefreshListener(): SwipeRefreshLayout.OnRefreshListener {
+        return SwipeRefreshLayout.OnRefreshListener {
+            errorMessage.visibility = View.GONE
+            doOnRefresh()
+        }
     }
 
     /**
@@ -66,4 +85,9 @@ abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutRe
      * @return ViewModel заданного типа
      */
     abstract fun provideViewModel(): VM
+
+    /**
+     * Метод, сожержащий действие, которое необходимо выполнить в [SwipeRefreshLayout.OnRefreshListener.OnRefresh]
+     */
+    abstract fun doOnRefresh()
 }

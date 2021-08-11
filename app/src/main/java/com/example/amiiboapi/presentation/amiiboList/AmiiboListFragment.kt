@@ -2,8 +2,6 @@ package com.example.amiiboapi.presentation.amiiboList
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +10,6 @@ import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.example.amiiboapi.presentation.aboutAmiibo.AboutAmiiboFragment
 import com.example.amiiboapi.presentation.amiiboList.adapter.AmiiboAdapter
 import com.example.amiiboapi.presentation.common.BaseFragment
-import com.example.amiiboapi.presentation.extensions.navigation
 
 /**
  * Фрагмент для отображения предметов по выбранной игровой серии
@@ -21,7 +18,7 @@ import com.example.amiiboapi.presentation.extensions.navigation
  */
 class AmiiboListFragment : BaseFragment<AmiiboListViewModel>(R.layout.fragment_with_list) {
 
-    private lateinit var amiibosListRecyclerView: RecyclerView
+    private lateinit var amiiboListRecyclerView: RecyclerView
 
     override fun provideViewModel(): AmiiboListViewModel {
         return ViewModelProvider(this).get(AmiiboListViewModel::class.java)
@@ -29,20 +26,17 @@ class AmiiboListFragment : BaseFragment<AmiiboListViewModel>(R.layout.fragment_w
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        amiibosListRecyclerView = view.findViewById(R.id.listOfElements)
+        amiiboListRecyclerView = view.findViewById(R.id.listOfElements)
         viewModel.amiiboListMinimal.observe(viewLifecycleOwner, ::showList)
         val gridLayoutManager = GridLayoutManager(requireContext(), ITEMS_SPAN_COUNT)
-        amiibosListRecyclerView.layoutManager = gridLayoutManager
-        arguments?.let { args->
-            if(args.containsKey(GAME_SERIES_KEY))
-                viewModel.getAmiiboByGameSeries(args.getString(GAME_SERIES_KEY)!!)
-        }
+        amiiboListRecyclerView.layoutManager = gridLayoutManager
+        loadAmiiboList()
     }
 
-    private fun showList(amiibosList: List<AmiiboModelMinimal>) {
-        val amiibosAdapter = AmiiboAdapter(amiibosList, ::showAmiiboInfo)
-        amiibosListRecyclerView.adapter = amiibosAdapter
-        amiibosListRecyclerView.visibility = View.VISIBLE
+    private fun showList(amiiboList: List<AmiiboModelMinimal>) {
+        val amiiboAdapter = AmiiboAdapter(amiiboList, ::showAmiiboInfo)
+        amiiboListRecyclerView.adapter = amiiboAdapter
+        amiiboListRecyclerView.visibility = View.VISIBLE
     }
 
     private fun showAmiiboInfo(amiiboTail: String) {
@@ -50,6 +44,17 @@ class AmiiboListFragment : BaseFragment<AmiiboListViewModel>(R.layout.fragment_w
             AboutAmiiboFragment.newInstance(amiiboTail),
             AboutAmiiboFragment.TAG
         )
+    }
+
+    override fun doOnRefresh() {
+        amiiboListRecyclerView.visibility = View.GONE
+        loadAmiiboList(true)
+    }
+
+    private fun loadAmiiboList(forceReload: Boolean = false) {
+        val args = requireArguments()
+        if (args.containsKey(GAME_SERIES_KEY))
+            viewModel.getAmiiboByGameSeries(args.getString(GAME_SERIES_KEY)!!, forceReload)
     }
 
     companion object {

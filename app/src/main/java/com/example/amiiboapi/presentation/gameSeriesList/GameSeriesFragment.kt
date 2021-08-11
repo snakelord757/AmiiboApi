@@ -1,5 +1,6 @@
 package com.example.amiiboapi.presentation.gameSeriesList
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -33,6 +34,7 @@ class GameSeriesFragment : BaseFragment<GameSeriesViewModel>(R.layout.fragment_w
         val linearLayoutManager = LinearLayoutManager(requireContext())
         gameSeriesRecyclerView.layoutManager = linearLayoutManager
         viewModel.gameSeries.observe(viewLifecycleOwner, ::showGameSeries)
+        viewModel.getGameSeries(false)
     }
 
     private fun showGameSeries(gameSeries: List<GameSeriesModel>) {
@@ -46,6 +48,11 @@ class GameSeriesFragment : BaseFragment<GameSeriesViewModel>(R.layout.fragment_w
             AmiiboListFragment.newInstance(gameSeriesKey),
             AmiiboListFragment.TAG
         )
+    }
+
+    override fun doOnRefresh() {
+        gameSeriesRecyclerView.visibility = View.GONE
+        viewModel.getGameSeries(true)
     }
 
     companion object {

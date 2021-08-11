@@ -5,26 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/amiiboInfoContainer"
-        android:visibility="gone"
-        android:layout_height="match_parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
-        layout="@layout/about_amiibo_layout"/>
+        android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <include
+            android:id="@+id/amiiboInfoContainer"
+            layout="@layout/about_amiibo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/errorMessage"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
         app:drawableTopCompat="@drawable/ic_error" />
 
 </FrameLayout>

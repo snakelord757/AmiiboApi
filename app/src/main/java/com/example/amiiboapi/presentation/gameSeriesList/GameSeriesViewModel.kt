@@ -25,15 +25,17 @@ class GameSeriesViewModel(
     errorMapper: ErrorMapper = FakeDependencyInjector.injectErrorMapper()
 ) : AppViewModel(errorMapper) {
 
-    init {
-        getGameSeries()
-    }
-
     private val gameSeriesMutableLiveData = MutableLiveData<List<GameSeriesModel>>()
     val gameSeries: LiveData<List<GameSeriesModel>>
         get() = gameSeriesMutableLiveData
 
-    private fun getGameSeries() {
+    fun getGameSeries(forceReload: Boolean) {
+        if (gameSeriesMutableLiveData.value.isNullOrEmpty() || forceReload)
+            loadGameSeries()
+    }
+
+    private fun loadGameSeries() {
+        showProgress()
         singleTaskDisposable = Single.fromCallable {
             amiiboInteractor.getGameSeries()
         }

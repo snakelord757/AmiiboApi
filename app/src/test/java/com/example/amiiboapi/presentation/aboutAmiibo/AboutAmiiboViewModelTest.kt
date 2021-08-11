@@ -50,10 +50,11 @@ class AboutAmiiboViewModelTest {
         val expectedResult = AMIIBO_INFO_EXPECTED_RESPONSE.amiibo.first()
 
         //Act
-        aboutAmiiboViewModel.loadInfoAbout(AMIIBO_TAIL)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
+            showProgressBarObserver.onChanged(true)
             showProgressBarObserver.onChanged(false)
             amiiboObserver.onChanged(expectedResult)
         }
@@ -69,10 +70,11 @@ class AboutAmiiboViewModelTest {
         every { errorMapper.mapError(ioException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.loadInfoAbout(AMIIBO_TAIL)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
+            showProgressBarObserver.onChanged(true)
             showProgressBarObserver.onChanged(false)
             errorObserver.onChanged(expectedResult)
         }
@@ -88,10 +90,11 @@ class AboutAmiiboViewModelTest {
         every { errorMapper.mapError(interruptedIOException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.loadInfoAbout(AMIIBO_TAIL)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
+            showProgressBarObserver.onChanged(true)
             showProgressBarObserver.onChanged(false)
             errorObserver.onChanged(expectedResult)
         }
@@ -107,10 +110,11 @@ class AboutAmiiboViewModelTest {
         every { errorMapper.mapError(badResponseException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.loadInfoAbout(AMIIBO_TAIL)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
+            showProgressBarObserver.onChanged(true)
             showProgressBarObserver.onChanged(false)
             errorObserver.onChanged(expectedResult)
         }
