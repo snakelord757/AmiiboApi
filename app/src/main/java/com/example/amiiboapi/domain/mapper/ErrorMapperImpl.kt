@@ -6,11 +6,6 @@ import com.example.amiiboapi.domain.model.Error
 import java.io.InterruptedIOException
 import java.net.UnknownHostException
 
-/**
- * Маппер ошибок, которые могут прийти во время получения ответа
- *
- * @author Murad Luguev on 08-08-2021
- */
 class ErrorMapperImpl : ErrorMapper {
 
     override fun mapError(throwable: Throwable): Error =

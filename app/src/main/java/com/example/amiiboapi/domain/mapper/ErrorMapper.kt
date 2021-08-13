@@ -9,7 +9,7 @@ import com.example.amiiboapi.domain.model.Error
  */
 interface ErrorMapper {
     /**
-     * Возвращает [Error], котоырй содержит информцаию об ошибке
+     * Возвращает [Error], котоырй содержит информацию об ошибке
      *
      * @param throwable исключение, которое возникло во время получения ответа
      *
