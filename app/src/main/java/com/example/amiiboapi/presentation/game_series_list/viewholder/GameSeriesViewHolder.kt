@@ -1,4 +1,4 @@
-package com.example.amiiboapi.presentation.gameSeriesList.viewholder
+package com.example.amiiboapi.presentation.game_series_list.viewholder
 
 import android.view.View
 import android.widget.TextView

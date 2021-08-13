@@ -1,10 +1,12 @@
 package com.example.amiiboapi.domain.interactor
 
+import androidx.annotation.WorkerThread
 import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.example.amiiboapi.data.model.GameSeriesModel
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Интерактор для получения информации из репозитория
@@ -18,6 +20,7 @@ interface AmiiboInteractor {
      *
      * @return список [GameSeriesModel]
      */
+    @WorkerThread
     fun getGameSeries(): Amiibo<GameSeriesModel>
 
     /**
@@ -26,6 +29,7 @@ interface AmiiboInteractor {
      * @param gameSeriesKey ключ серии игр
      * @return список [AmiiboModelMinimal]
      */
+    @WorkerThread
     fun getAmiiboByGameSeries(gameSeriesKey: String): Amiibo<AmiiboModelMinimal>
 
     /**
@@ -34,5 +38,6 @@ interface AmiiboInteractor {
      * @param amiiboTail "хвост" предмета
      * @return список, сотсоящий из одного элемента [AmiiboModel]
      */
+    @WorkerThread
     fun getInfoAboutAmiibo(amiiboTail: String): Amiibo<AmiiboModel>
 }

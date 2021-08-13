@@ -13,13 +13,6 @@ import java.net.UnknownHostException
  */
 class ErrorMapperImpl : ErrorMapper {
 
-    /**
-     * Возвращает [Error], котоырй содержит информцаию об ошибке
-     *
-     * @param throwable исключение, которое возникло во время получения ответа
-     *
-     * @return [Error] с описанием ошибки
-     */
     override fun mapError(throwable: Throwable): Error =
         when (throwable) {
             is UnknownHostException -> Error(R.string.unknown_host_message)

@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.amiiboapi.domain.mapper.ErrorMapper
-import com.example.amiiboapi.domain.mapper.ErrorMapperImpl
 import com.example.amiiboapi.domain.model.Error
-import com.example.amiiboapi.presentation.di.FakeDependencyInjector
 import io.reactivex.disposables.Disposable
 
 /**

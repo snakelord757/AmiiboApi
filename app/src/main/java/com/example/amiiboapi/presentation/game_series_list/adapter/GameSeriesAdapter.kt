@@ -1,11 +1,11 @@
-package com.example.amiiboapi.presentation.gameSeriesList.adapter
+package com.example.amiiboapi.presentation.game_series_list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.GameSeriesModel
-import com.example.amiiboapi.presentation.gameSeriesList.viewholder.GameSeriesViewHolder
+import com.example.amiiboapi.presentation.game_series_list.viewholder.GameSeriesViewHolder
 
 /**
  * Адаптер для отображения серий игр

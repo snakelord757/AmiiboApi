@@ -1,8 +1,8 @@
-package com.example.amiiboapi.presentation.di
+package com.example.amiiboapi.di
 
 import com.example.amiiboapi.data.datasource.AmiiboApi
 import com.example.amiiboapi.data.datasource.AmiiboApiImpl
-import com.example.amiiboapi.data.repository.AmiiboRepository
+import com.example.amiiboapi.domain.repository.AmiiboRepository
 import com.example.amiiboapi.data.repository.AmiiboRepositoryImpl
 import com.example.amiiboapi.domain.interactor.AmiiboInteractor
 import com.example.amiiboapi.domain.interactor.AmiiboInteractorImpl

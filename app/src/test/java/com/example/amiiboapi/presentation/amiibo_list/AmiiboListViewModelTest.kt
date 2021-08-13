@@ -1,4 +1,4 @@
-package com.example.amiiboapi.presentation.amiiboList
+package com.example.amiiboapi.presentation.amiibo_list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer

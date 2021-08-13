@@ -6,7 +6,7 @@ import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.example.amiiboapi.data.model.GameSeriesModel
-import com.example.amiiboapi.data.repository.AmiiboRepository
+import com.example.amiiboapi.domain.repository.AmiiboRepository
 import com.example.amiiboapi.data.repository.AmiiboRepositoryImpl
 import com.google.common.truth.Truth
 import io.mockk.every

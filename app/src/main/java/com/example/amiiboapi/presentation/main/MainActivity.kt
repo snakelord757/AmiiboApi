@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.amiiboapi.R
-import com.example.amiiboapi.presentation.aboutAmiibo.AboutAmiiboFragment
-import com.example.amiiboapi.presentation.amiiboList.AmiiboListFragment
-import com.example.amiiboapi.presentation.gameSeriesList.GameSeriesFragment
+import com.example.amiiboapi.presentation.about_amiibo.AboutAmiiboFragment
+import com.example.amiiboapi.presentation.amiibo_list.AmiiboListFragment
+import com.example.amiiboapi.presentation.game_series_list.GameSeriesFragment
 import com.example.amiiboapi.presentation.common.interfaces.Navigation
 
 /**

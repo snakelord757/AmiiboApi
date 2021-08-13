@@ -1,4 +1,4 @@
-package com.example.amiiboapi.presentation.amiiboList
+package com.example.amiiboapi.presentation.amiibo_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,10 +7,8 @@ import com.example.amiiboapi.domain.interactor.AmiiboInteractor
 import com.example.amiiboapi.domain.mapper.ErrorMapper
 import com.example.amiiboapi.presentation.common.SchedulersProvider
 import com.example.amiiboapi.presentation.common.viewmodel.AppViewModel
-import com.example.amiiboapi.presentation.di.FakeDependencyInjector
+import com.example.amiiboapi.di.FakeDependencyInjector
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * ViewModel для получения списка предметов, по заданной серии игр

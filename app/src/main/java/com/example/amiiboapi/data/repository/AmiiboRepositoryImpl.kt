@@ -1,12 +1,11 @@
 package com.example.amiiboapi.data.repository
 
 import com.example.amiiboapi.data.datasource.AmiiboApi
-import com.example.amiiboapi.data.datasource.AmiiboApiImpl
 import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.example.amiiboapi.data.model.GameSeriesModel
-import io.reactivex.Single
+import com.example.amiiboapi.domain.repository.AmiiboRepository
 
 class AmiiboRepositoryImpl(
     private val amiiboApi: AmiiboApi

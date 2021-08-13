@@ -1,11 +1,11 @@
-package com.example.amiiboapi.presentation.gameSeriesList
+package com.example.amiiboapi.presentation.about_amiibo
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.exception.BadResponseException
 import com.example.amiiboapi.data.model.Amiibo
-import com.example.amiiboapi.data.model.GameSeriesModel
+import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.domain.interactor.AmiiboInteractor
 import com.example.amiiboapi.domain.mapper.ErrorMapper
 import com.example.amiiboapi.domain.model.Error
@@ -17,7 +17,7 @@ import org.junit.Test
 import java.io.IOException
 import java.io.InterruptedIOException
 
-class GameSeriesViewModelTest {
+class AboutAmiiboViewModelTest {
 
     @Rule
     @JvmField
@@ -25,18 +25,18 @@ class GameSeriesViewModelTest {
 
     private val amiiboInteractor: AmiiboInteractor = mockk()
     private val errorMapper: ErrorMapper = mockk()
-    private lateinit var gameSeriesViewModel: GameSeriesViewModel
+    private lateinit var aboutAmiiboViewModel: AboutAmiiboViewModel
 
-    private val amiiboObserver: Observer<List<GameSeriesModel>> = mockk()
+    private val amiiboObserver: Observer<AmiiboModel> = mockk()
     private val errorObserver: Observer<Error> = mockk()
     private val showProgressBarObserver: Observer<Boolean> = mockk()
 
     @Before
     fun setUp() {
-        gameSeriesViewModel = GameSeriesViewModel(amiiboInteractor, SchedulerProviderTest(), errorMapper)
-        gameSeriesViewModel.gameSeries.observeForever(amiiboObserver)
-        gameSeriesViewModel.error.observeForever(errorObserver)
-        gameSeriesViewModel.showProgressBar.observeForever(showProgressBarObserver)
+        aboutAmiiboViewModel = AboutAmiiboViewModel(amiiboInteractor, SchedulerProviderTest(), errorMapper)
+        aboutAmiiboViewModel.amiibo.observeForever(amiiboObserver)
+        aboutAmiiboViewModel.error.observeForever(errorObserver)
+        aboutAmiiboViewModel.showProgressBar.observeForever(showProgressBarObserver)
 
         every { amiiboObserver.onChanged(any()) } just Runs
         every { errorObserver.onChanged(any()) } just Runs
@@ -46,11 +46,11 @@ class GameSeriesViewModelTest {
     @Test
     fun testAmiiboInfoReceived() {
         //Arrange
-        every { amiiboInteractor.getGameSeries() } returns GAME_SERIES_RESPONSE
-        val expectedResult = GAME_SERIES_RESPONSE.amiibo
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } returns AMIIBO_INFO_EXPECTED_RESPONSE
+        val expectedResult = AMIIBO_INFO_EXPECTED_RESPONSE.amiibo.first()
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
@@ -65,12 +65,12 @@ class GameSeriesViewModelTest {
     fun testConnectionLost() {
         //Arrange
         val ioException = IOException()
-        every { amiiboInteractor.getGameSeries() } throws ioException
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } throws ioException
         val expectedResult = EXCEPTED_ERROR_CONNECTION_LOST
         every { errorMapper.mapError(ioException) } returns expectedResult
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
@@ -85,12 +85,12 @@ class GameSeriesViewModelTest {
     fun testConnectionTimeout() {
         //Arrange
         val interruptedIOException = InterruptedIOException()
-        every { amiiboInteractor.getGameSeries() } throws interruptedIOException
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } throws interruptedIOException
         val expectedResult = EXPECTED_ERROR_CONNECTION_TIMEOUT
         every { errorMapper.mapError(interruptedIOException) } returns expectedResult
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
@@ -105,12 +105,12 @@ class GameSeriesViewModelTest {
     fun testBadResponseExceptionReceived() {
         //Arrange
         val badResponseException = BadResponseException(NOT_FOUND)
-        every { amiiboInteractor.getGameSeries() } throws badResponseException
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } throws badResponseException
         val expectedResult = EXPECTED_ERROR_NOT_FOUND
         every { errorMapper.mapError(badResponseException) } returns expectedResult
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
 
         //Assert
         verifySequence {
@@ -122,7 +122,16 @@ class GameSeriesViewModelTest {
     }
 
     companion object {
-        private val GAME_SERIES_RESPONSE = Amiibo(listOf(GameSeriesModel(key = "0x000", "Super Mario")))
+        private const val AMIIBO_TAIL = "000e0002"
+
+        private val AMIIBO_INFO_EXPECTED_RESPONSE = Amiibo(listOf(
+            AmiiboModel(
+                amiiboSeries = "Super Smash Bros.",
+                gameSeries = "The Legend of Zelda",
+                image = "https://raw.githubusercontent.com/N3evin/AmiiboAPI/master/images/icon_01010000-000e0002.png",
+                name = "Zelda",
+                type = "Figure")
+        ))
 
         private val EXCEPTED_ERROR_CONNECTION_LOST = Error(R.string.unknown_host_message)
         private val EXPECTED_ERROR_CONNECTION_TIMEOUT = Error(R.string.connection_timeout)

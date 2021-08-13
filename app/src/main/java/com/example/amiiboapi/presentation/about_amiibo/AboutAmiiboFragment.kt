@@ -1,4 +1,4 @@
-package com.example.amiiboapi.presentation.aboutAmiibo
+package com.example.amiiboapi.presentation.about_amiibo
 
 import android.os.Bundle
 import android.view.View

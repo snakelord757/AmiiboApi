@@ -1,4 +1,4 @@
-package com.example.amiiboapi.presentation.amiiboList
+package com.example.amiiboapi.presentation.amiibo_list
 
 import android.os.Bundle
 import android.view.View
@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
-import com.example.amiiboapi.presentation.aboutAmiibo.AboutAmiiboFragment
-import com.example.amiiboapi.presentation.amiiboList.adapter.AmiiboAdapter
+import com.example.amiiboapi.presentation.about_amiibo.AboutAmiiboFragment
+import com.example.amiiboapi.presentation.amiibo_list.adapter.AmiiboAdapter
 import com.example.amiiboapi.presentation.common.BaseFragment
 
 /**

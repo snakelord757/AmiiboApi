@@ -1,4 +1,4 @@
-package com.example.amiiboapi.data.repository
+package com.example.amiiboapi.domain.repository
 
 import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel

@@ -1,4 +1,4 @@
-package com.example.amiiboapi.presentation.amiiboList.viewholder
+package com.example.amiiboapi.presentation.amiibo_list.viewholder
 
 import android.view.View
 import android.widget.ImageView

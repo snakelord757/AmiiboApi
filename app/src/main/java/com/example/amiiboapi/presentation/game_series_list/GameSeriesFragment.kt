@@ -1,19 +1,15 @@
-package com.example.amiiboapi.presentation.gameSeriesList
+package com.example.amiiboapi.presentation.game_series_list
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.GameSeriesModel
-import com.example.amiiboapi.presentation.amiiboList.AmiiboListFragment
+import com.example.amiiboapi.presentation.amiibo_list.AmiiboListFragment
 import com.example.amiiboapi.presentation.common.BaseFragment
-import com.example.amiiboapi.presentation.extensions.navigation
-import com.example.amiiboapi.presentation.gameSeriesList.adapter.GameSeriesAdapter
+import com.example.amiiboapi.presentation.game_series_list.adapter.GameSeriesAdapter
 
 /**
  * Фрагмент для отображения игровых серий
