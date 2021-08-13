@@ -87,7 +87,7 @@ abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutRe
     abstract fun provideViewModel(): VM
 
     /**
-     * Метод, сожержащий действие, которое необходимо выполнить в [SwipeRefreshLayout.OnRefreshListener.OnRefresh]
+     * Метод, сожержащий действие, которое необходимо выполнить в [SwipeRefreshLayout.OnRefreshListener]
      */
     abstract fun doOnRefresh()
 }
