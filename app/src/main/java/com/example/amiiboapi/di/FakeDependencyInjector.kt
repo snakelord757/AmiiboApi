@@ -50,7 +50,7 @@ object FakeDependencyInjector {
     }
 
     /**
-     * Возвращает подкготовленный интерактор
+     * Возвращает подготовленный интерактор
      *
      * @return экземпляр [AmiiboInteractor]
      */
