@@ -1,9 +1,7 @@
 package com.example.amiiboapi.data
 
-import android.content.SharedPreferences
 import com.example.amiiboapi.data.datasource.api.AmiiboApi
 import com.example.amiiboapi.data.datasource.storage.AmiiboStorage
-import com.example.amiiboapi.data.datasource.storage.AmiiboStorageImpl
 import com.example.amiiboapi.data.exception.BadResponseException
 import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel
