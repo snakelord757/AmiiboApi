@@ -21,7 +21,7 @@ interface AmiiboInteractor {
      * @return список [GameSeriesModel]
      */
     @WorkerThread
-    fun getGameSeries(): Amiibo<GameSeriesModel>
+    fun getGameSeries(forceReload: Boolean): Amiibo<GameSeriesModel>
 
     /**
      * Возвращает предметы по заданной серии игр
@@ -30,7 +30,7 @@ interface AmiiboInteractor {
      * @return список [AmiiboModelMinimal]
      */
     @WorkerThread
-    fun getAmiiboByGameSeries(gameSeriesKey: String): Amiibo<AmiiboModelMinimal>
+    fun getAmiiboByGameSeries(gameSeriesKey: String, forceReload: Boolean): Amiibo<AmiiboModelMinimal>
 
     /**
      * Возвращает информацию о конкретном предмете
@@ -39,5 +39,5 @@ interface AmiiboInteractor {
      * @return список, сотсоящий из одного элемента [AmiiboModel]
      */
     @WorkerThread
-    fun getInfoAboutAmiibo(amiiboTail: String): Amiibo<AmiiboModel>
+    fun getInfoAboutAmiibo(amiiboTail: String, forceReload: Boolean): Amiibo<AmiiboModel>
 }

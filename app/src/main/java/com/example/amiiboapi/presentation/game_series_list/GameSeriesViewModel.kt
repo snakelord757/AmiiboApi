@@ -18,7 +18,7 @@ import io.reactivex.Single
  * @author Murad Luguev on 08-08-2021
  */
 class GameSeriesViewModel(
-    private val amiiboInteractor: AmiiboInteractor = FakeDependencyInjector.injectAmiiboInteractor(),
+    private val amiiboInteractor: AmiiboInteractor,
     private val schedulersProvider: SchedulersProvider = FakeDependencyInjector.injectSchedulersProvider(),
     errorMapper: ErrorMapper = FakeDependencyInjector.injectErrorMapper()
 ) : AppViewModel(errorMapper) {
@@ -29,13 +29,13 @@ class GameSeriesViewModel(
 
     fun getGameSeries(forceReload: Boolean) {
         if (gameSeriesMutableLiveData.value.isNullOrEmpty() || forceReload)
-            loadGameSeries()
+            loadGameSeries(forceReload)
     }
 
-    private fun loadGameSeries() {
+    private fun loadGameSeries(forceReload: Boolean) {
         showProgress()
         singleTaskDisposable = Single.fromCallable {
-            amiiboInteractor.getGameSeries()
+            amiiboInteractor.getGameSeries(forceReload)
         }
             .observeOn(schedulersProvider.main())
             .subscribeOn(schedulersProvider.io())

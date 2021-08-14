@@ -1,4 +1,4 @@
-package com.example.amiiboapi.data.datasource
+package com.example.amiiboapi.data.datasource.api
 
 import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel

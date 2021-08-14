@@ -1,6 +1,9 @@
 package com.example.amiiboapi.data
 
-import com.example.amiiboapi.data.datasource.AmiiboApi
+import android.content.SharedPreferences
+import com.example.amiiboapi.data.datasource.api.AmiiboApi
+import com.example.amiiboapi.data.datasource.storage.AmiiboStorage
+import com.example.amiiboapi.data.datasource.storage.AmiiboStorageImpl
 import com.example.amiiboapi.data.exception.BadResponseException
 import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel
@@ -9,8 +12,10 @@ import com.example.amiiboapi.data.model.GameSeriesModel
 import com.example.amiiboapi.domain.repository.AmiiboRepository
 import com.example.amiiboapi.data.repository.AmiiboRepositoryImpl
 import com.google.common.truth.Truth
+import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Test
 import java.io.IOException
 import java.lang.IllegalStateException
@@ -18,16 +23,18 @@ import java.lang.IllegalStateException
 class AmiiboRepositoryTest {
 
     private val amiiboApi: AmiiboApi = mockk()
-    private val amiiboRepository: AmiiboRepository = AmiiboRepositoryImpl(amiiboApi)
+    private val amiiboStorage: AmiiboStorage = mockk(relaxed = true)
+    private val amiiboRepository: AmiiboRepository = AmiiboRepositoryImpl(amiiboApi, amiiboStorage)
 
     @Test
     fun testGetGameSeries() {
         //Arrange
         every { amiiboApi.getGameSeries() } returns GAME_SERIES_RESPONSE
+
         val expectedResult = GAME_SERIES_RESPONSE
 
         //Act
-        val actualResult = amiiboRepository.getGameSeries()
+        val actualResult = amiiboRepository.getGameSeries(true)
 
         //Assert
         Truth.assertThat(actualResult).isEqualTo(expectedResult)
@@ -40,7 +47,7 @@ class AmiiboRepositoryTest {
         val expectedResult = AMIIBO_LIST_EXPECTED_RESPONSE
 
         //Act
-        val actualResult = amiiboRepository.getAmiiboByGameSeries(GAME_SERIES_KEY)
+        val actualResult = amiiboRepository.getAmiiboByGameSeries(GAME_SERIES_KEY, true)
 
         //Assert
         Truth.assertThat(actualResult).isEqualTo(expectedResult)
@@ -53,7 +60,63 @@ class AmiiboRepositoryTest {
         val expectedResult = AMIIBO_INFO_EXPECTED_RESPONSE
 
         //Act
-        val actualResult = amiiboRepository.getInfoAboutAmiibo(AMIIBO_TAIL)
+        val actualResult = amiiboRepository.getInfoAboutAmiibo(AMIIBO_TAIL, true)
+
+        //Assert
+        Truth.assertThat(actualResult).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun getGameSeriesFromStorage() {
+        //Arrange
+        every { amiiboStorage.getGameSeriesFromStorage(GAME_SERIES_PREFERENCES_KEY) } returns GAME_SERIES_RESPONSE
+        val expectedResult = GAME_SERIES_RESPONSE
+
+        //Act
+        val actualResult = amiiboRepository.getGameSeries(false)
+
+        //Assert
+        Truth.assertThat(actualResult).isEqualTo(expectedResult)
+        verify { amiiboApi.getGameSeries() wasNot Called}
+    }
+
+    @Test
+    fun getAmiiboByGameSeriesFromStorage() {
+        //Arrange
+        every { amiiboStorage.getAmiiboByGameSeriesFromStorage(GAME_SERIES_KEY) } returns AMIIBO_LIST_EXPECTED_RESPONSE
+        val expectedResult = AMIIBO_LIST_EXPECTED_RESPONSE
+
+        //Act
+        val actualResult = amiiboRepository.getAmiiboByGameSeries(GAME_SERIES_KEY, false)
+
+        //Assert
+        Truth.assertThat(actualResult).isEqualTo(expectedResult)
+        verify { amiiboApi.getAmiiboByGameSeries(GAME_SERIES_KEY) wasNot Called}
+    }
+
+    @Test
+    fun testGetInfoAboutAmiiboFromStorage() {
+        //Arrange
+        every { amiiboStorage.getInfoAboutAmiiboFromStorage(AMIIBO_TAIL) } returns AMIIBO_INFO_EXPECTED_RESPONSE
+        val expectedResult = AMIIBO_INFO_EXPECTED_RESPONSE
+
+        //Act
+        val actualResult = amiiboRepository.getInfoAboutAmiibo(AMIIBO_TAIL, false)
+
+        //Assert
+        Truth.assertThat(actualResult).isEqualTo(expectedResult)
+        verify { amiiboApi.getInfoAboutAmiibo(AMIIBO_TAIL) wasNot Called}
+    }
+
+    @Test
+    fun testPreferencesEmpty() {
+        //Arrange
+        every { amiiboStorage.getGameSeriesFromStorage(GAME_SERIES_PREFERENCES_KEY) } returns null
+        every { amiiboApi.getGameSeries() } returns GAME_SERIES_RESPONSE
+        val expectedResult = GAME_SERIES_RESPONSE
+
+        //Act
+        val actualResult = amiiboRepository.getGameSeries(false)
 
         //Assert
         Truth.assertThat(actualResult).isEqualTo(expectedResult)
@@ -65,7 +128,7 @@ class AmiiboRepositoryTest {
         every { amiiboApi.getGameSeries() } throws BadResponseException(NOT_FOUND_CODE)
 
         //Act
-        amiiboRepository.getGameSeries()
+        amiiboRepository.getGameSeries(true)
     }
 
     @Test(expected = IOException::class)
@@ -82,7 +145,7 @@ class AmiiboRepositoryTest {
     fun testCallAlreadyExecuted() {
         //Arrange
         val illegalStateException = IllegalStateException(EXCEPTION_MESSAGE_ILLEGAL_STATE)
-        every { amiiboApi.getGameSeries()} throws illegalStateException
+        every { amiiboApi.getGameSeries() } throws illegalStateException
 
         //Act
         amiiboApi.getGameSeries()
@@ -116,5 +179,7 @@ class AmiiboRepositoryTest {
         private const val EXCEPTION_MESSAGE_IO = "Unable to resolve connection"
 
         private const val EXCEPTION_MESSAGE_ILLEGAL_STATE = "Call already executed"
+
+        private const val GAME_SERIES_PREFERENCES_KEY = "game_series"
     }
 }

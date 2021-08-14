@@ -46,11 +46,11 @@ class AmiiboListViewModelTest {
     @Test
     fun testAmiiboByGameSeriesReceived() {
         //Arrange
-        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY) } returns AMIIBO_LIST_EXPECTED_RESPONSE
+        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY, true) } returns AMIIBO_LIST_EXPECTED_RESPONSE
         val expectedResult = AMIIBO_LIST_EXPECTED_RESPONSE.amiibo
 
         //Act
-        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, false)
+        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, true)
 
         //Assert
         verifySequence {
@@ -65,12 +65,12 @@ class AmiiboListViewModelTest {
     fun testConnectionLost() {
         //Arrange
         val ioException = IOException()
-        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY)} throws ioException
+        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY, true) } throws ioException
         val expectedResult = EXCEPTED_ERROR_CONNECTION_LOST
         every { errorMapper.mapError(ioException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, false)
+        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, true)
 
         //Assert
         verifySequence {
@@ -85,12 +85,12 @@ class AmiiboListViewModelTest {
     fun testConnectionTimeout() {
         //Arrange
         val interruptedIOException = InterruptedIOException()
-        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY)} throws interruptedIOException
+        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY, true) } throws interruptedIOException
         val expectedResult = EXPECTED_ERROR_CONNECTION_TIMEOUT
         every { errorMapper.mapError(interruptedIOException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, false)
+        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, true)
 
         //Assert
         verifySequence {
@@ -105,12 +105,12 @@ class AmiiboListViewModelTest {
     fun testBadResponseExceptionReceived() {
         //Arrange
         val badResponseException = BadResponseException(NOT_FOUND)
-        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY) } throws badResponseException
+        every { amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY, true) } throws badResponseException
         val expectedResult = EXPECTED_ERROR_NOT_FOUND
         every { errorMapper.mapError(badResponseException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, false)
+        aboutAmiiboViewModel.getAmiiboByGameSeries(GAME_SERIES_KEY, true)
 
         //Assert
         verifySequence {

@@ -46,11 +46,11 @@ class AboutAmiiboViewModelTest {
     @Test
     fun testAmiiboInfoReceived() {
         //Arrange
-        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } returns AMIIBO_INFO_EXPECTED_RESPONSE
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL, true) } returns AMIIBO_INFO_EXPECTED_RESPONSE
         val expectedResult = AMIIBO_INFO_EXPECTED_RESPONSE.amiibo.first()
 
         //Act
-        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, true)
 
         //Assert
         verifySequence {
@@ -65,12 +65,12 @@ class AboutAmiiboViewModelTest {
     fun testConnectionLost() {
         //Arrange
         val ioException = IOException()
-        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } throws ioException
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL, true) } throws ioException
         val expectedResult = EXCEPTED_ERROR_CONNECTION_LOST
         every { errorMapper.mapError(ioException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, true)
 
         //Assert
         verifySequence {
@@ -85,12 +85,12 @@ class AboutAmiiboViewModelTest {
     fun testConnectionTimeout() {
         //Arrange
         val interruptedIOException = InterruptedIOException()
-        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } throws interruptedIOException
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL, true) } throws interruptedIOException
         val expectedResult = EXPECTED_ERROR_CONNECTION_TIMEOUT
         every { errorMapper.mapError(interruptedIOException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, true)
 
         //Assert
         verifySequence {
@@ -105,12 +105,12 @@ class AboutAmiiboViewModelTest {
     fun testBadResponseExceptionReceived() {
         //Arrange
         val badResponseException = BadResponseException(NOT_FOUND)
-        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL) } throws badResponseException
+        every { amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL, true) } throws badResponseException
         val expectedResult = EXPECTED_ERROR_NOT_FOUND
         every { errorMapper.mapError(badResponseException) } returns expectedResult
 
         //Act
-        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, false)
+        aboutAmiiboViewModel.getInfoAbout(AMIIBO_TAIL, true)
 
         //Assert
         verifySequence {

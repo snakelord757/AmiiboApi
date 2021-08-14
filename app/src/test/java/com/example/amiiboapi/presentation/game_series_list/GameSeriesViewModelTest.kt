@@ -46,11 +46,11 @@ class GameSeriesViewModelTest {
     @Test
     fun testAmiiboInfoReceived() {
         //Arrange
-        every { amiiboInteractor.getGameSeries() } returns GAME_SERIES_RESPONSE
+        every { amiiboInteractor.getGameSeries(true) } returns GAME_SERIES_RESPONSE
         val expectedResult = GAME_SERIES_RESPONSE.amiibo
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        gameSeriesViewModel.getGameSeries(true)
 
         //Assert
         verifySequence {
@@ -65,12 +65,12 @@ class GameSeriesViewModelTest {
     fun testConnectionLost() {
         //Arrange
         val ioException = IOException()
-        every { amiiboInteractor.getGameSeries() } throws ioException
+        every { amiiboInteractor.getGameSeries(true) } throws ioException
         val expectedResult = EXCEPTED_ERROR_CONNECTION_LOST
         every { errorMapper.mapError(ioException) } returns expectedResult
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        gameSeriesViewModel.getGameSeries(true)
 
         //Assert
         verifySequence {
@@ -85,12 +85,12 @@ class GameSeriesViewModelTest {
     fun testConnectionTimeout() {
         //Arrange
         val interruptedIOException = InterruptedIOException()
-        every { amiiboInteractor.getGameSeries() } throws interruptedIOException
+        every { amiiboInteractor.getGameSeries(true) } throws interruptedIOException
         val expectedResult = EXPECTED_ERROR_CONNECTION_TIMEOUT
         every { errorMapper.mapError(interruptedIOException) } returns expectedResult
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        gameSeriesViewModel.getGameSeries(true)
 
         //Assert
         verifySequence {
@@ -105,12 +105,12 @@ class GameSeriesViewModelTest {
     fun testBadResponseExceptionReceived() {
         //Arrange
         val badResponseException = BadResponseException(NOT_FOUND)
-        every { amiiboInteractor.getGameSeries() } throws badResponseException
+        every { amiiboInteractor.getGameSeries(true) } throws badResponseException
         val expectedResult = EXPECTED_ERROR_NOT_FOUND
         every { errorMapper.mapError(badResponseException) } returns expectedResult
 
         //Act
-        gameSeriesViewModel.getGameSeries(false)
+        gameSeriesViewModel.getGameSeries(true)
 
         //Assert
         verifySequence {

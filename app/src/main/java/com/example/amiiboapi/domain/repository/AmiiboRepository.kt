@@ -17,7 +17,7 @@ interface AmiiboRepository {
      *
      * @return список [GameSeriesModel]
      */
-    fun getGameSeries(): Amiibo<GameSeriesModel>
+    fun getGameSeries(forceReload: Boolean): Amiibo<GameSeriesModel>
 
     /**
      * Возвращает предметы по заданной серии игр
@@ -25,7 +25,7 @@ interface AmiiboRepository {
      * @param gameSeriesKey ключ серии игр
      * @return список [AmiiboModelMinimal]
      */
-    fun getAmiiboByGameSeries(gameSeriesKey: String): Amiibo<AmiiboModelMinimal>
+    fun getAmiiboByGameSeries(gameSeriesKey: String, forceReload: Boolean): Amiibo<AmiiboModelMinimal>
 
     /**
      * Возвращает информацию о конкретном предмете
@@ -33,5 +33,5 @@ interface AmiiboRepository {
      * @param amiiboTail "хвост" предмета
      * @return список, сотсоящий из одного элемента [AmiiboModel]
      */
-    fun getInfoAboutAmiibo(amiiboTail: String): Amiibo<AmiiboModel>
+    fun getInfoAboutAmiibo(amiiboTail: String, forceReload: Boolean): Amiibo<AmiiboModel>
 }

@@ -18,7 +18,7 @@ import io.reactivex.Single
  * @author Murad Luguev on 08-08-2021
  */
 class AboutAmiiboViewModel(
-    private val amiiboInteractor: AmiiboInteractor = FakeDependencyInjector.injectAmiiboInteractor(),
+    private val amiiboInteractor: AmiiboInteractor,
     private val schedulersProvider: SchedulersProvider = FakeDependencyInjector.injectSchedulersProvider(),
     errorMapper: ErrorMapper = FakeDependencyInjector.injectErrorMapper()
 ) : AppViewModel(errorMapper) {
@@ -30,17 +30,18 @@ class AboutAmiiboViewModel(
 
     fun getInfoAbout(amiiboTail: String, forceReload: Boolean) {
         if (amiiboMutableLiveData.value == null || forceReload)
-            loadInfoAbout(amiiboTail)
+            loadInfoAbout(amiiboTail, forceReload)
     }
+
     /**
      * Метод, для загрузки информации о выбранном предмете
      *
      * @param amiiboTail "хвост" предмета
      */
-    private fun loadInfoAbout(amiiboTail: String) {
+    private fun loadInfoAbout(amiiboTail: String, forceReload: Boolean) {
         showProgress()
         singleTaskDisposable = Single.fromCallable {
-            amiiboInteractor.getInfoAboutAmiibo(amiiboTail)
+            amiiboInteractor.getInfoAboutAmiibo(amiiboTail, forceReload)
         }
             .observeOn(schedulersProvider.main())
             .subscribeOn(schedulersProvider.io())

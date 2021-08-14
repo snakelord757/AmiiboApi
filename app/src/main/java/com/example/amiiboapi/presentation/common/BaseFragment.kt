@@ -1,6 +1,7 @@
 package com.example.amiiboapi.presentation.common
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -8,6 +9,8 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.amiiboapi.R
 import com.example.amiiboapi.domain.model.Error
@@ -27,13 +30,13 @@ import com.example.amiiboapi.presentation.extensions.navigation
 abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         where VM : AppViewModel {
 
-    protected lateinit var viewModel: VM
+    protected val viewModel: VM by lazy { provideViewModel() }
+    private lateinit var factory: ViewModelProvider.Factory
     private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var errorMessage: TextView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = provideViewModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,6 +82,10 @@ abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutRe
         )
     }
 
+    protected fun getSharedPreferences(): SharedPreferences {
+        return requireContext().getSharedPreferences(AMIIBO_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
     /**
      * Метод для предоставления ViewModel
      *
@@ -90,4 +97,10 @@ abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutRe
      * Метод, сожержащий действие, которое необходимо выполнить в [SwipeRefreshLayout.OnRefreshListener]
      */
     abstract fun doOnRefresh()
+
+    abstract fun provideViewModelFactory(): ViewModelProvider.Factory
+
+    companion object {
+        private const val AMIIBO_PREFERENCES = "amiibo_preferences"
+    }
 }

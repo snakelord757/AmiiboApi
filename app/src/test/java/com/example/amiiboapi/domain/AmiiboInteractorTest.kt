@@ -23,11 +23,11 @@ class AmiiboInteractorTest {
     @Test
     fun testGetGameSeries() {
         //Arrange
-        every { amiiboRepository.getGameSeries() } returns GAME_SERIES_RESPONSE
+        every { amiiboRepository.getGameSeries(true) } returns GAME_SERIES_RESPONSE
         val expectedResult = GAME_SERIES_RESPONSE
 
         //Act
-        val actualResult = amiiboInteractor.getGameSeries()
+        val actualResult = amiiboInteractor.getGameSeries(true)
 
         //Assert
         Truth.assertThat(actualResult).isEqualTo(expectedResult)
@@ -36,11 +36,11 @@ class AmiiboInteractorTest {
     @Test
     fun testGetAmiiboByGameSeries() {
         //Arrange
-        every { amiiboRepository.getAmiiboByGameSeries(GAME_SERIES_KEY) } returns AMIIBO_LIST_EXPECTED_RESPONSE
+        every { amiiboRepository.getAmiiboByGameSeries(GAME_SERIES_KEY, true) } returns AMIIBO_LIST_EXPECTED_RESPONSE
         val expectedResult = AMIIBO_LIST_EXPECTED_RESPONSE
 
         //Act
-        val actualResult = amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY)
+        val actualResult = amiiboInteractor.getAmiiboByGameSeries(GAME_SERIES_KEY, true)
 
         //Assert
         Truth.assertThat(actualResult).isEqualTo(expectedResult)
@@ -49,11 +49,11 @@ class AmiiboInteractorTest {
     @Test
     fun testGetInfoAboutAmiibo() {
         //Arrange
-        every { amiiboRepository.getInfoAboutAmiibo(AMIIBO_TAIL) } returns AMIIBO_INFO_EXPECTED_RESPONSE
+        every { amiiboRepository.getInfoAboutAmiibo(AMIIBO_TAIL, true) } returns AMIIBO_INFO_EXPECTED_RESPONSE
         val expectedResult = AMIIBO_INFO_EXPECTED_RESPONSE
 
         //Act
-        val actualResult = amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL)
+        val actualResult = amiiboInteractor.getInfoAboutAmiibo(AMIIBO_TAIL, true)
 
         //Assert
         Truth.assertThat(actualResult).isEqualTo(expectedResult)
@@ -62,30 +62,30 @@ class AmiiboInteractorTest {
     @Test(expected = BadResponseException::class)
     fun testBadResponse() {
         //Arrange
-        every { amiiboRepository.getGameSeries() } throws BadResponseException(NOT_FOUND_CODE)
+        every { amiiboRepository.getGameSeries(true) } throws BadResponseException(NOT_FOUND_CODE)
 
         //Act
-        amiiboInteractor.getGameSeries()
+        amiiboInteractor.getGameSeries(true)
     }
 
     @Test(expected = IOException::class)
     fun testConnectionLost() {
         //Arrange
         val ioException = IOException(EXCEPTION_MESSAGE_IO)
-        every { amiiboRepository.getGameSeries() } throws ioException
+        every { amiiboRepository.getGameSeries(true) } throws ioException
 
         //Act
-        amiiboInteractor.getGameSeries()
+        amiiboInteractor.getGameSeries(true)
     }
 
     @Test(expected = IllegalStateException::class)
     fun testCallAlreadyExecuted() {
         //Arrange
         val illegalStateException = IllegalStateException(EXCEPTION_MESSAGE_ILLEGAL_STATE)
-        every { amiiboRepository.getGameSeries()} throws illegalStateException
+        every { amiiboRepository.getGameSeries(true) } throws illegalStateException
 
         //Act
-        amiiboInteractor.getGameSeries()
+        amiiboInteractor.getGameSeries(true)
     }
 
     companion object {

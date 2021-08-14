@@ -17,7 +17,7 @@ object ResponseMapper {
     /**
      * Преобразование ответа из [input] в [Amiibo]
      *
-     * @param T тип содержимого контейнера
+     * @param T тип содержимого контейнера [Amiibo]
      * @param input json, который необходимо преобразовать
      * @return контейнер [Amiibo], который содержит ответ
      */
@@ -26,5 +26,18 @@ object ResponseMapper {
         val type = Types.newParameterizedType(Amiibo::class.java, T::class.java)
         val jsonAdapter: JsonAdapter<Amiibo<T>> = moshi.adapter(type)
         return jsonAdapter.fromJson(input)!!
+    }
+
+    /**
+     * Преобразует [input] в строку для сохранения в локальном хранилище
+     * @param T тип содержимимого контейнера [Amiibo]
+     * @param input объект, который необходимо сохранить
+     * @return json, описывающий объект
+     */
+    inline fun <reified T> mapToJson(input: Amiibo<T>): String {
+        val moshi = Moshi.Builder().build()
+        val type = Types.newParameterizedType(Amiibo::class.java, T::class.java)
+        val jsonAdapter: JsonAdapter<Amiibo<T>> = moshi.adapter(type)
+        return jsonAdapter.toJson(input)
     }
 }

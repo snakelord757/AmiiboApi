@@ -2,11 +2,13 @@ package com.example.amiiboapi.presentation.game_series_list
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.GameSeriesModel
+import com.example.amiiboapi.di.FakeDependencyInjector
 import com.example.amiiboapi.presentation.amiibo_list.AmiiboListFragment
 import com.example.amiiboapi.presentation.common.BaseFragment
 import com.example.amiiboapi.presentation.game_series_list.adapter.GameSeriesAdapter
@@ -21,7 +23,16 @@ class GameSeriesFragment : BaseFragment<GameSeriesViewModel>(R.layout.fragment_w
     private lateinit var gameSeriesRecyclerView: RecyclerView
 
     override fun provideViewModel(): GameSeriesViewModel {
-        return ViewModelProvider(this)[GameSeriesViewModel::class.java]
+        return ViewModelProvider(this, provideViewModelFactory())[GameSeriesViewModel::class.java]
+    }
+
+    override fun provideViewModelFactory(): ViewModelProvider.Factory {
+        return object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                val interactor = FakeDependencyInjector.injectAmiiboInteractor(getSharedPreferences())
+                return GameSeriesViewModel(interactor) as T
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,7 +1,7 @@
 package com.example.amiiboapi.data
 
-import com.example.amiiboapi.data.datasource.AmiiboApi
-import com.example.amiiboapi.data.datasource.AmiiboApiImpl
+import com.example.amiiboapi.data.datasource.api.AmiiboApi
+import com.example.amiiboapi.data.datasource.api.AmiiboApiImpl
 import com.example.amiiboapi.data.exception.BadResponseException
 import com.example.amiiboapi.data.model.Amiibo
 import com.example.amiiboapi.data.model.AmiiboModel

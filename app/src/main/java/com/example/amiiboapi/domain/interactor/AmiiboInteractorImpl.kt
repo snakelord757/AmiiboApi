@@ -12,17 +12,17 @@ class AmiiboInteractorImpl(
 ) : AmiiboInteractor {
 
     @WorkerThread
-    override fun getGameSeries(): Amiibo<GameSeriesModel> {
-        return amiiboRepository.getGameSeries()
+    override fun getGameSeries(forceReload: Boolean): Amiibo<GameSeriesModel> {
+        return amiiboRepository.getGameSeries(forceReload)
     }
 
     @WorkerThread
-    override fun getAmiiboByGameSeries(gameSeriesKey: String): Amiibo<AmiiboModelMinimal> {
-        return amiiboRepository.getAmiiboByGameSeries(gameSeriesKey)
+    override fun getAmiiboByGameSeries(gameSeriesKey: String, forceReload: Boolean): Amiibo<AmiiboModelMinimal> {
+        return amiiboRepository.getAmiiboByGameSeries(gameSeriesKey, forceReload)
     }
 
     @WorkerThread
-    override fun getInfoAboutAmiibo(amiiboTail: String): Amiibo<AmiiboModel> {
-        return amiiboRepository.getInfoAboutAmiibo(amiiboTail)
+    override fun getInfoAboutAmiibo(amiiboTail: String, forceReload: Boolean): Amiibo<AmiiboModel> {
+        return amiiboRepository.getInfoAboutAmiibo(amiiboTail, forceReload)
     }
 }
