@@ -9,7 +9,7 @@ import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.squareup.picasso.Picasso
 
 /**
- * ViewHolder ля отображения предмета
+ * ViewHolder для отображения предмета
  *
  * @property clickListener слушатель нажатий
  *
@@ -27,13 +27,22 @@ class AmiiboViewHolder(
      *
      * @param amiiboModelMinimal модель предмета с минимальной информацией
      */
-    fun bind(amiiboModelMinimal: AmiiboModelMinimal) {
+    fun bind(amiiboModelMinimal: AmiiboModelMinimal, showPics: Boolean) {
+        if (showPics) {
+            loadPic(amiiboModelMinimal)
+        } else {
+            amiiboImage.visibility = View.GONE
+        }
+        amiiboTailTextView.text = amiiboModelMinimal.name
+        itemView.setOnClickListener { clickListener.invoke(amiiboModelMinimal.tail) }
+    }
+
+    private fun loadPic(amiiboModelMinimal: AmiiboModelMinimal) {
+        amiiboImage.visibility = View.VISIBLE
         Picasso.get()
             .load(amiiboModelMinimal.image)
             .fit()
             .centerInside()
             .into(amiiboImage)
-        amiiboTailTextView.text = amiiboModelMinimal.name
-        itemView.setOnClickListener { clickListener.invoke(amiiboModelMinimal.tail) }
     }
 }

@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.di.FakeDependencyInjector
@@ -35,7 +36,10 @@ class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment
     override fun provideViewModelFactory(): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val interactor = FakeDependencyInjector.injectAmiiboInteractor(getSharedPreferences())
+                val interactor = FakeDependencyInjector.injectAmiiboInteractor(
+                    PreferenceManager.getDefaultSharedPreferences(requireContext()),
+                    getSharedPreferences()
+                )
                 return AboutAmiiboViewModel(interactor) as T
             }
         }

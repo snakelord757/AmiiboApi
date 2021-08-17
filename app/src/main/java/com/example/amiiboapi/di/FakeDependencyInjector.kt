@@ -48,18 +48,22 @@ object FakeDependencyInjector {
         return api!!
     }
 
-    private fun injectAmiiboStorage(sharedPreferences: SharedPreferences): AmiiboStorage {
+    private fun injectAmiiboStorage(
+        settingsSharedPreferences: SharedPreferences,
+        sharedPreferences: SharedPreferences): AmiiboStorage {
         if (storage == null) {
-            storage = AmiiboStorageImpl(sharedPreferences)
+            storage = AmiiboStorageImpl(settingsSharedPreferences, sharedPreferences)
         }
         return storage!!
     }
 
-    private fun injectAmiiboRepository(sharedPreferences: SharedPreferences): AmiiboRepository {
+    private fun injectAmiiboRepository(
+        settingsSharedPreferences: SharedPreferences,
+        sharedPreferences: SharedPreferences): AmiiboRepository {
         if (repository == null) {
             repository = AmiiboRepositoryImpl(
                 injectAmiiboApi(),
-                injectAmiiboStorage(sharedPreferences)
+                injectAmiiboStorage(sharedPreferences, settingsSharedPreferences)
             )
         }
         return repository!!
@@ -68,12 +72,17 @@ object FakeDependencyInjector {
     /**
      * Возвращает подготовленный интерактор
      *
+     * @param settingsSharedPreferences преференсы, в которых хранятся настройки
+     * @param amiiboSharedPreferences преференсы, в которых хранится загруженная информация
+     *
      * @return экземпляр [AmiiboInteractor]
      */
-    fun injectAmiiboInteractor(sharedPreferences: SharedPreferences): AmiiboInteractor {
+    fun injectAmiiboInteractor(
+        settingsSharedPreferences: SharedPreferences,
+        amiiboSharedPreferences: SharedPreferences): AmiiboInteractor {
         if (interactor == null) {
             interactor = AmiiboInteractorImpl(
-                injectAmiiboRepository(sharedPreferences)
+                injectAmiiboRepository(amiiboSharedPreferences, settingsSharedPreferences)
             )
         }
         return interactor!!

@@ -2,13 +2,17 @@ package com.example.amiiboapi.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.preference.PreferenceManager
 import com.example.amiiboapi.R
 import com.example.amiiboapi.presentation.about_amiibo.AboutAmiiboFragment
 import com.example.amiiboapi.presentation.amiibo_list.AmiiboListFragment
 import com.example.amiiboapi.presentation.game_series_list.GameSeriesFragment
 import com.example.amiiboapi.presentation.common.interfaces.Navigation
+import com.example.amiiboapi.presentation.settings.SettingsFragment
 
 /**
  * Главное Activity, являющееся хостом для всех фрагментов
@@ -21,6 +25,7 @@ class MainActivity : AppCompatActivity(), Navigation {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         restoreFragment()
+        PreferenceManager.setDefaultValues(this, R.xml.fragment_settings, true)
     }
 
     private fun restoreFragment() {
@@ -59,6 +64,18 @@ class MainActivity : AppCompatActivity(), Navigation {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, fragment, tag)
             .commit()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.settings_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.settings) {
+            move(SettingsFragment.newInstance(), SettingsFragment.TAG)
+        }
+        return true
     }
 
 }

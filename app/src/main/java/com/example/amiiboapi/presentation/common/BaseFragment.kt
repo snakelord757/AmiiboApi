@@ -35,10 +35,6 @@ abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutRe
     private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var errorMessage: TextView
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI(view)

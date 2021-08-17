@@ -48,7 +48,9 @@ class AmiiboRepositoryImpl(
         apiCall: () -> Amiibo<T>
     ): Amiibo<T> {
         val apiResponse = apiCall.invoke()
-        insertIntoStorage(key, apiResponse)
+        if (amiiboStorage.getForceStoreParameter(FORCE_STORE_PARAMETER_KEY)) {
+            insertIntoStorage(key, apiResponse)
+        }
         return apiResponse
     }
 
@@ -58,6 +60,7 @@ class AmiiboRepositoryImpl(
     }
 
     companion object {
+        private const val FORCE_STORE_PARAMETER_KEY = "force_store"
         private const val GAME_SERIES_KEY = "game_series"
     }
 }

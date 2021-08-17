@@ -9,4 +9,9 @@
     <string name="not_found">Requested information not found</string>
     <string name="request_timeout">Request timeout</string>
     <string name="release_date">Release date</string>
+    <string name="force_store_key">force_store</string>
+    <string name="force_store_title">Force store</string>
+    <string name="show_pics_key">show_pics</string>
+    <string name="show_pics_title">Show pics</string>
+    <string name="settings_title">Settings</string>
 </resources>

@@ -43,4 +43,13 @@ interface AmiiboStorage {
      * @param value значение, которое необходимо сохранить
      */
     fun insertIntoStorage(key: String, value: String)
+
+
+    /**
+     * Возвращает флаг для принудительного кеширования
+     *
+     * @param parameterKey ключ параметра в SharedPreference
+     * @return флаг принудительного кеширования
+     */
+    fun getForceStoreParameter(parameterKey: String): Boolean
 }

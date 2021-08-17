@@ -16,6 +16,7 @@ import com.example.amiiboapi.presentation.amiibo_list.viewholder.AmiiboViewHolde
  * @author Murad Luguev on 08-08-2021
  */
 class AmiiboAdapter(
+    private val showPics: Boolean,
     private val amiiboList: List<AmiiboModelMinimal>,
     private val clickListener: (String) -> Unit,) : RecyclerView.Adapter<AmiiboViewHolder>() {
 
@@ -26,7 +27,7 @@ class AmiiboAdapter(
     }
 
     override fun onBindViewHolder(holder: AmiiboViewHolder, position: Int) {
-        holder.bind(amiiboList[position])
+        holder.bind(amiiboList[position], showPics)
     }
 
     override fun getItemCount(): Int = amiiboList.size

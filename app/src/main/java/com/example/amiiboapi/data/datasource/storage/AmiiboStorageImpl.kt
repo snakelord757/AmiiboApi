@@ -7,7 +7,10 @@ import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.example.amiiboapi.data.model.GameSeriesModel
 
-class AmiiboStorageImpl(private val sharedPreferences: SharedPreferences) : AmiiboStorage {
+class AmiiboStorageImpl(
+    private val settingPreferences: SharedPreferences,
+    private val amiiboSharedPreferences: SharedPreferences
+) : AmiiboStorage {
 
     override fun getGameSeriesFromStorage(key: String): Amiibo<GameSeriesModel>? {
         return getDataFromSharedPreferences(key)
@@ -22,13 +25,17 @@ class AmiiboStorageImpl(private val sharedPreferences: SharedPreferences) : Amii
     }
 
     override fun insertIntoStorage(key: String, value: String) {
-        val preferencesEditor = sharedPreferences.edit()
+        val preferencesEditor = amiiboSharedPreferences.edit()
         preferencesEditor.putString(key, value)
         preferencesEditor.apply()
     }
-    
+
+    override fun getForceStoreParameter(parameterKey: String): Boolean {
+        return settingPreferences.getBoolean(parameterKey, false)
+    }
+
     private inline fun <reified T> getDataFromSharedPreferences(key: String): Amiibo<T>? {
-        val dataJson: String? = sharedPreferences.getString(key, null)
+        val dataJson: String? = amiiboSharedPreferences.getString(key, null)
         if (dataJson != null) {
             return ResponseMapper.mapResponse(dataJson)
         }

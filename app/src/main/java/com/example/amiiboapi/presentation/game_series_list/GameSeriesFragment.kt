@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amiiboapi.R
@@ -29,7 +30,9 @@ class GameSeriesFragment : BaseFragment<GameSeriesViewModel>(R.layout.fragment_w
     override fun provideViewModelFactory(): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val interactor = FakeDependencyInjector.injectAmiiboInteractor(getSharedPreferences())
+                val interactor = FakeDependencyInjector.injectAmiiboInteractor(
+                    PreferenceManager.getDefaultSharedPreferences(requireContext()),
+                    getSharedPreferences())
                 return GameSeriesViewModel(interactor) as T
             }
         }
