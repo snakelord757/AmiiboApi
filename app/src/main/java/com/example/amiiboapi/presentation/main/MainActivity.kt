@@ -32,7 +32,11 @@ class MainActivity : AppCompatActivity(), Navigation {
         val gameSeriesFragment = supportFragmentManager.findFragmentByTag(GameSeriesFragment.TAG)
         val amiiboListFragment = supportFragmentManager.findFragmentByTag(AmiiboListFragment.TAG)
         val aboutAmiiboFragment = supportFragmentManager.findFragmentByTag(AboutAmiiboFragment.TAG)
+        val settingsFragment = supportFragmentManager.findFragmentByTag(SettingsFragment.TAG)
         when {
+            settingsFragment != null -> {
+                replace(settingsFragment, SettingsFragment.TAG)
+            }
             aboutAmiiboFragment != null -> {
                 replace(aboutAmiiboFragment, AboutAmiiboFragment.TAG)
             }
