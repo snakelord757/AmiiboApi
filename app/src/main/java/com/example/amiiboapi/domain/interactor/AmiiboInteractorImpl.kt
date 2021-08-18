@@ -6,8 +6,9 @@ import com.example.amiiboapi.data.model.AmiiboModel
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
 import com.example.amiiboapi.data.model.GameSeriesModel
 import com.example.amiiboapi.domain.repository.AmiiboRepository
+import javax.inject.Inject
 
-class AmiiboInteractorImpl(
+class AmiiboInteractorImpl @Inject constructor(
     private val amiiboRepository: AmiiboRepository
 ) : AmiiboInteractor {
 

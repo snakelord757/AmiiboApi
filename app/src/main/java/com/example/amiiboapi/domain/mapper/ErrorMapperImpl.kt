@@ -5,8 +5,9 @@ import com.example.amiiboapi.data.exception.BadResponseException
 import com.example.amiiboapi.domain.model.Error
 import java.io.InterruptedIOException
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class ErrorMapperImpl : ErrorMapper {
+class ErrorMapperImpl @Inject constructor() : ErrorMapper {
 
     override fun mapError(throwable: Throwable): Error =
         when (throwable) {

@@ -2,18 +2,14 @@ package com.example.amiiboapi.presentation.amiibo_list
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.AmiiboModelMinimal
-import com.example.amiiboapi.di.FakeDependencyInjector
 import com.example.amiiboapi.presentation.about_amiibo.AboutAmiiboFragment
 import com.example.amiiboapi.presentation.amiibo_list.adapter.AmiiboAdapter
+import com.example.amiiboapi.presentation.application.AmiiboApiApp
 import com.example.amiiboapi.presentation.common.BaseFragment
-import com.example.amiiboapi.presentation.game_series_list.GameSeriesViewModel
 
 /**
  * Фрагмент для отображения предметов по выбранной игровой серии
@@ -24,19 +20,8 @@ class AmiiboListFragment : BaseFragment<AmiiboListViewModel>(R.layout.fragment_w
 
     private lateinit var amiiboListRecyclerView: RecyclerView
 
-    override fun provideViewModel(): AmiiboListViewModel {
-        return ViewModelProvider(this, provideViewModelFactory()).get(AmiiboListViewModel::class.java)
-    }
-
-    override fun provideViewModelFactory(): ViewModelProvider.Factory {
-        return object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val interactor = FakeDependencyInjector.injectAmiiboInteractor(
-                    PreferenceManager.getDefaultSharedPreferences(requireContext()),
-                    getSharedPreferences())
-                return AmiiboListViewModel(interactor) as T
-            }
-        }
+    override fun getViewModelClass(): Class<AmiiboListViewModel> {
+        return AmiiboListViewModel::class.java
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +34,7 @@ class AmiiboListFragment : BaseFragment<AmiiboListViewModel>(R.layout.fragment_w
     }
 
     private fun showList(amiiboList: List<AmiiboModelMinimal>) {
-        val amiiboAdapter = AmiiboAdapter(getShowPicsParameter() ,amiiboList, ::showAmiiboInfo)
+        val amiiboAdapter = AmiiboAdapter(getShowPicsParameter(), amiiboList, ::showAmiiboInfo)
         amiiboListRecyclerView.adapter = amiiboAdapter
         amiiboListRecyclerView.visibility = View.VISIBLE
     }
@@ -62,7 +47,7 @@ class AmiiboListFragment : BaseFragment<AmiiboListViewModel>(R.layout.fragment_w
     }
 
     private fun getShowPicsParameter(): Boolean {
-        val settingsPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val settingsPref = AmiiboApiApp.appComponent.settingsSharedPreferences()
         return settingsPref.getBoolean(getString(R.string.show_pics_key), true)
     }
 

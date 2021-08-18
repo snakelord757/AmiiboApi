@@ -5,13 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import com.example.amiiboapi.R
 import com.example.amiiboapi.data.model.AmiiboModel
-import com.example.amiiboapi.di.FakeDependencyInjector
-import com.example.amiiboapi.presentation.amiibo_list.AmiiboListViewModel
 import com.example.amiiboapi.presentation.common.BaseFragment
 import com.squareup.picasso.Picasso
 
@@ -29,20 +24,8 @@ class AboutAmiiboFragment : BaseFragment<AboutAmiiboViewModel>(R.layout.fragment
     private lateinit var amiiboTypeTextView: TextView
     private lateinit var amiiboInfoContainer: ViewGroup
 
-    override fun provideViewModel(): AboutAmiiboViewModel {
-        return ViewModelProvider(this, provideViewModelFactory())[AboutAmiiboViewModel::class.java]
-    }
-
-    override fun provideViewModelFactory(): ViewModelProvider.Factory {
-        return object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val interactor = FakeDependencyInjector.injectAmiiboInteractor(
-                    PreferenceManager.getDefaultSharedPreferences(requireContext()),
-                    getSharedPreferences()
-                )
-                return AboutAmiiboViewModel(interactor) as T
-            }
-        }
+    override fun getViewModelClass(): Class<AboutAmiiboViewModel> {
+        return AboutAmiiboViewModel::class.java
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

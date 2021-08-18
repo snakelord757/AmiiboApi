@@ -9,9 +9,10 @@ import com.example.amiiboapi.data.model.GameSeriesModel
 import okhttp3.*
 import java.io.IOException
 import java.lang.IllegalStateException
+import javax.inject.Inject
 import kotlin.jvm.Throws
 
-class AmiiboApiImpl(
+class AmiiboApiImpl @Inject constructor(
     private val okHttpClient: OkHttpClient
 ) : AmiiboApi {
 
@@ -21,7 +22,7 @@ class AmiiboApiImpl(
     }
 
     override fun getAmiiboByGameSeries(gameSeriesKey: String): Amiibo<AmiiboModelMinimal> {
-        val response = executeRequest(getRequest(AMIIBO_BY_GAMESERIES_REQUEST_URL + gameSeriesKey))
+        val response = executeRequest(getRequest(AMIIBO_BY_GAME_SERIES_REQUEST_URL + gameSeriesKey))
         return ResponseMapper.mapResponse(response.body!!.string())
     }
 
@@ -48,7 +49,7 @@ class AmiiboApiImpl(
 
     companion object {
         private const val AMIIBO_GAME_SERIES_URL = "https://www.amiiboapi.com/api/gameseries"
-        private const val AMIIBO_BY_GAMESERIES_REQUEST_URL = "https://www.amiiboapi.com/api/amiibo/?gameseries="
+        private const val AMIIBO_BY_GAME_SERIES_REQUEST_URL = "https://www.amiiboapi.com/api/amiibo/?gameseries="
         private const val AMIIBO_FULL_INFORMATION_REQUEST_URL = "https://www.amiiboapi.com/api/amiibo/?tail="
     }
 }

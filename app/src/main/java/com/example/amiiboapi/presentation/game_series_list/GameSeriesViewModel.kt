@@ -7,7 +7,6 @@ import com.example.amiiboapi.domain.interactor.AmiiboInteractor
 import com.example.amiiboapi.domain.mapper.ErrorMapper
 import com.example.amiiboapi.presentation.common.SchedulersProvider
 import com.example.amiiboapi.presentation.common.viewmodel.AppViewModel
-import com.example.amiiboapi.di.FakeDependencyInjector
 import io.reactivex.Single
 
 /**
@@ -19,8 +18,8 @@ import io.reactivex.Single
  */
 class GameSeriesViewModel(
     private val amiiboInteractor: AmiiboInteractor,
-    private val schedulersProvider: SchedulersProvider = FakeDependencyInjector.injectSchedulersProvider(),
-    errorMapper: ErrorMapper = FakeDependencyInjector.injectErrorMapper()
+    private val schedulersProvider: SchedulersProvider,
+    errorMapper: ErrorMapper
 ) : AppViewModel(errorMapper) {
 
     private val gameSeriesMutableLiveData = MutableLiveData<List<GameSeriesModel>>()

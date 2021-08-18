@@ -9,11 +9,13 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.amiiboapi.R
 import com.example.amiiboapi.domain.model.Error
+import com.example.amiiboapi.presentation.application.AmiiboApiApp
 import com.example.amiiboapi.presentation.common.viewmodel.AppViewModel
 import com.example.amiiboapi.presentation.extensions.navigation
 
@@ -27,11 +29,10 @@ import com.example.amiiboapi.presentation.extensions.navigation
  *
  * @author Murad Luguev on 08-08-2021
  */
-abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
-        where VM : AppViewModel {
+abstract class BaseFragment<VM : AppViewModel>(@LayoutRes layoutResId: Int) : Fragment(layoutResId) {
 
+    protected val factory: ViewModelProvider.Factory = AmiiboApiApp.appComponent.viewModelFactory()
     protected val viewModel: VM by lazy { provideViewModel() }
-    private lateinit var factory: ViewModelProvider.Factory
     private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var errorMessage: TextView
 
@@ -87,14 +88,16 @@ abstract class BaseFragment<VM>(@LayoutRes layoutResId: Int) : Fragment(layoutRe
      *
      * @return ViewModel заданного типа
      */
-    abstract fun provideViewModel(): VM
+    private fun provideViewModel(): VM {
+        return ViewModelProvider(this, factory).get(getViewModelClass())
+    }
+
+    abstract fun getViewModelClass(): Class<VM>
 
     /**
      * Метод, сожержащий действие, которое необходимо выполнить в [SwipeRefreshLayout.OnRefreshListener]
      */
     abstract fun doOnRefresh()
-
-    abstract fun provideViewModelFactory(): ViewModelProvider.Factory
 
     companion object {
         private const val AMIIBO_PREFERENCES = "amiibo_preferences"
