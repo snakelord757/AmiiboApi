@@ -14,13 +14,14 @@ import org.junit.Test
 
 class AmiiboStorageTest {
 
-    private val sharedPreferences: SharedPreferences = mockk()
-    private val amiiboStorage: AmiiboStorage = AmiiboStorageImpl(sharedPreferences)
+    private val settingsSharedPreferences: SharedPreferences = mockk()
+    private val amiiboSharedPreferences: SharedPreferences = mockk()
+    private val amiiboStorage: AmiiboStorage = AmiiboStorageImpl(settingsSharedPreferences, amiiboSharedPreferences)
 
     @Test
     fun testStorageIsEmpty() {
         //Arrange
-        every { sharedPreferences.getString(any(), any()) } returns null
+        every { amiiboSharedPreferences.getString(any(), any()) } returns null
         val expectedResult = null
 
         //Act
@@ -37,7 +38,7 @@ class AmiiboStorageTest {
     @Test
     fun testGetGameSeriesFromStorage() {
         //Arrange
-        every { sharedPreferences.getString(GAME_SERIES_PREFERENCES_KEY, null) } returns GAME_SERIES_FROM_STORAGE
+        every { amiiboSharedPreferences.getString(GAME_SERIES_PREFERENCES_KEY, null) } returns GAME_SERIES_FROM_STORAGE
         val expectedResult = GAME_SERIES_RESPONSE
 
         //Act
@@ -50,7 +51,7 @@ class AmiiboStorageTest {
     @Test
     fun testGetAmiiboByGameSeries() {
         //Arrange
-        every { sharedPreferences.getString(GAME_SERIES_KEY, null) } returns AMIIBO_LIST_FROM_STORAGE
+        every { amiiboSharedPreferences.getString(GAME_SERIES_KEY, null) } returns AMIIBO_LIST_FROM_STORAGE
         val expectedResult = AMIIBO_LIST_EXPECTED_RESPONSE
 
         //Act
@@ -63,11 +64,37 @@ class AmiiboStorageTest {
     @Test
     fun testGetInfoAboutAmiibo() {
         //Arrange
-        every { sharedPreferences.getString(AMIIBO_TAIL, null) } returns ABOUT_AMIIBO_FROM_STORAGE
+        every { amiiboSharedPreferences.getString(AMIIBO_TAIL, null) } returns ABOUT_AMIIBO_FROM_STORAGE
         val expectedResult = AMIIBO_INFO_EXPECTED_RESPONSE
 
         //Act
         val actualResult = amiiboStorage.getInfoAboutAmiiboFromStorage(AMIIBO_TAIL)
+
+        //Assert
+        Truth.assertThat(actualResult).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun testForceStoreEnabled() {
+        //Arrange
+        every { settingsSharedPreferences.getBoolean(FORCE_STORE_PARAMETER_KEY, false) } returns true
+        val expectedResult = true
+
+        //Act
+        val actualResult = amiiboStorage.getForceStoreParameter(FORCE_STORE_PARAMETER_KEY)
+
+        //Assert
+        Truth.assertThat(actualResult).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun testForceStoreDisabled() {
+        //Arrange
+        every { settingsSharedPreferences.getBoolean(FORCE_STORE_PARAMETER_KEY, false) } returns false
+        val expectedResult = false
+
+        //Act
+        val actualResult = amiiboStorage.getForceStoreParameter(FORCE_STORE_PARAMETER_KEY)
 
         //Assert
         Truth.assertThat(actualResult).isEqualTo(expectedResult)
@@ -126,5 +153,7 @@ class AmiiboStorageTest {
                 name = "Zelda",
                 type = "Figure")
         ))
+
+        private const val FORCE_STORE_PARAMETER_KEY = "force_store"
     }
 }
